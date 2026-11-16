@@ -4,11 +4,13 @@ name: Build Bharat Swabhiman APK
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build-apk:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -24,13 +26,18 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Build debug APK
+      - name: Extract Android project
+        run: |
+          unzip -q Bharat_Swabhiman_Premium_Android_Project.zip -d extracted
+
+      - name: Build Android APK
+        working-directory: extracted/Bharat_Swabhiman_Android_APK_Project
         run: gradle assembleDebug
 
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Bharat-Swabhiman-Android-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: Bharat-Swabhiman-APK
+          path: extracted/Bharat_Swabhiman_Android_APK_Project/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           

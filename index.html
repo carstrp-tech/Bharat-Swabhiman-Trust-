@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#a85b16">
+<title>भारत स्वाभिमान</title>
+<style>
+:root{--s:#b9691b;--sd:#81400d;--bg:#f6f1e9;--ink:#302316;--muted:#796957}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif}
+header{background:linear-gradient(125deg,#91450c,#d98c34);color:#fff;padding:16px;border-radius:0 0 22px 22px}
+.brand{display:flex;align-items:center;gap:12px}.logo{height:48px;width:48px;border-radius:50%;background:#fff2d9;color:#99500e;display:grid;place-items:center;font-size:25px;border:2px solid #fff}
+h1{font-size:21px;margin:0}header small{opacity:.92}
+main{max-width:850px;margin:auto;padding:15px}.hidden{display:none!important}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:8px}.muted{font-size:12px;color:var(--muted)}
+h2{font-size:18px;margin:16px 0 10px}.notice{padding:12px;background:#fff;border:1px solid #efdbc1;border-radius:13px;font-size:13px;margin:14px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:#fff;border:0;border-radius:15px;overflow:hidden;text-align:left;padding:0;box-shadow:0 2px 9px #55331112;color:var(--ink);cursor:pointer}
+.card .emoji{height:92px;display:grid;place-items:center;font-size:39px;background:linear-gradient(135deg,#f6dfbd,#fff9ef)}
+.card b{display:block;padding:10px 11px 2px}.card small{display:block;padding:0 11px 11px;color:var(--muted)}
+button,.btn{border:0;border-radius:11px;background:var(--s);color:#fff;padding:10px 13px;font-weight:700;cursor:pointer;font:inherit}
+button.secondary{background:#efe2d1;color:#6b411b}button.danger{background:#a83c2c}
+button:disabled{opacity:.45}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.toolbar button{flex:1}
+.panel{background:#fff;padding:14px;border-radius:15px;box-shadow:0 2px 10px #55331110;margin:12px 0}
+label{display:block;font-size:13px;font-weight:650;margin:10px 0 5px}
+input,select{width:100%;border:1px solid #dfd2c1;border-radius:10px;padding:10px;background:#fffdf9;font:inherit}
+input[type=file]{font-size:12px}
+.templates{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.template{border:0;background:#fff;border-radius:13px;padding:7px;text-align:left;color:var(--ink);box-shadow:0 2px 8px #55331112}
+.template img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:9px;background:#f3e8d8}
+.template b{display:block;padding:7px 3px 2px;font-size:13px}
+#preview{width:100%;max-width:440px;display:block;margin:12px auto;border-radius:10px;background:#fff;box-shadow:0 2px 12px #0002}
+.row{display:flex;gap:8px}.row>*{flex:1;min-width:0}
+.admin-tag{font-size:11px;color:#8c531c}
+footer{text-align:center;padding:20px;color:#8b7b69;font-size:11px}
+@media(min-width:620px){.grid,.templates{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#a85b16">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" href="icon-192.png">
+</head>
+<body>
+<header><div class="brand"><div class="logo">ॐ</div><div><h1>भारत स्वाभिमान</h1><small>भारत स्वाभिमान न्यास · उत्तर प्रदेश पश्चिम</small></div></div></header>
+<main>
+<section id="home">
+ <div class="topline"><h2>आपका स्वागत है 🙏</h2><span class="admin-tag">टेस्ट ऐप 1.1</span></div>
+ <div class="notice">अपनी पसंद की कैटेगरी चुनें। तैयार पोस्टर में केवल अपना फोटो और विवरण जोड़ें। पोस्टर का मुख्य संदेश आपसे टाइप नहीं करवाया जाएगा।</div>
+ <h2>पोस्टर कैटेगरी</h2>
+ <div class="grid" id="cats"></div>
+ <div class="panel"><div class="topline"><b>एडमिन लॉगिन</b><span class="admin-tag">केवल अधिकृत एडमिन</span></div>
+ <p class="muted">पोस्टर अपलोड और मैनेज करने की सुविधा केवल एडमिन लॉगिन के बाद खुलेगी।</p>
+ <button onclick="showAdminLogin()">एडमिन लॉगिन</button></div>
+</section>
+
+<section id="gallery" class="hidden">
+ <button class="secondary" onclick="goHome()">← होम</button>
+ <h2 id="galleryTitle">पोस्टर चुनें</h2>
+ <p class="muted">किसी पोस्टर पर टैप करके अपनी जानकारी लगाएं।</p>
+ <div id="galleryItems" class="templates"></div>
+</section>
+
+<section id="personalize" class="hidden">
+ <button class="secondary" onclick="backGallery()">← पोस्टर गैलरी</button>
+ <h2>पोस्टर पर अपनी जानकारी लगाएं</h2>
+ <div class="panel">
+  <label>अपनी फोटो (वैकल्पिक)</label><input type="file" id="userPhoto" accept="image/*">
+  <label>नाम</label><input id="uName" placeholder="अपना नाम">
+  <label>पद</label><input id="uRole" placeholder="जैसे: योग शिक्षक">
+  <label>जिला</label><input id="uDistrict" placeholder="जैसे: मेरठ">
+  <label>मोबाइल नंबर</label><input id="uPhone" inputmode="tel" placeholder="मोबाइल नंबर">
+  <p class="muted">ये विवरण पोस्टर के नीचे निर्धारित पट्टी में दिखाई देंगे। मुख्य पोस्टर और उसके संदेश में कोई बदलाव नहीं होगा।</p>
+ </div>
+ <canvas id="preview" width="1080" height="1440"></canvas>
+ <div class="toolbar"><button onclick="renderPreview()">Preview अपडेट करें</button><button class="secondary" onclick="downloadPoster()">डाउनलोड</button><button style="background:#287a48" onclick="sharePoster()">शेयर</button></div>
+</section>
+
+<section id="adminLogin" class="hidden">
+ <button class="secondary" onclick="goHome()">← होम</button>
+ <h2>एडमिन लॉगिन</h2>
+ <div class="panel">
+  <p class="muted">पोस्टर अपलोड करने के लिए एडमिन PIN डालें।</p>
+  <label>एडमिन PIN</label><input id="adminPin" type="password" inputmode="numeric" placeholder="PIN दर्ज करें">
+  <button style="margin-top:12px;width:100%" onclick="verifyAdmin()">लॉगिन करें</button>
+  <p class="muted">टेस्ट वर्जन का अस्थायी PIN: <b>2580</b></p>
+ </div>
+</section>
+
+<section id="admin" class="hidden">
+ <button class="secondary" onclick="goHome()">← होम</button>
+ <h2>एडमिन – तैयार पोस्टर अपलोड करें</h2>
+ <div class="panel">
+  <label>कैटेगरी</label><select id="aCat"></select>
+  <label>पोस्टर का नाम</label><input id="aTitle" placeholder="जैसे: कपालभाति के लाभ">
+  <label>अपना तैयार पोस्टर इमेज चुनें</label><input type="file" id="aImage" accept="image/*">
+  <p class="muted">ऐसी इमेज अपलोड करें जिसमें ऊपर मुख्य डिजाइन/जानकारी हो और नीचे कुछ खाली जगह हो, जहां यूजर का नाम व फोटो आएगा।</p>
+  <button onclick="addTemplate()">पोस्टर अपलोड करें</button>
+ </div>
+ <h2>अपलोड किए गए पोस्टर</h2><div id="adminItems" class="templates"></div>
+ <p class="muted">यह डेमो पोस्टर इसी ब्राउज़र के लोकल स्टोरेज में रखता है। ऐप का डेटा दूसरे फोन पर अपने आप नहीं पहुंचेगा।</p>
+</section>
+</main>
+<footer>भारत स्वाभिमान · निःशुल्क टेस्ट ऐप<br>कोई Earn, Withdrawal, Wallet या Recharge नहीं</footer>
+<script>
+const categories=[
+["योग एवं प्राणायाम","🧘","योगासन, कपालभाति, अनुलोम-विलोम"],
+["आयुर्वेद","🌿","जड़ी-बूटी और स्वास्थ्य जानकारी"],
+["हिंदू त्योहार","🪔","पर्व एवं शुभकामना पोस्टर"],
+["सनातन संस्कृति","🕉️","श्लोक, मंत्र और संस्कार"],
+["सुविचार","✨","प्रेरक विचार और संदेश"],
+["राष्ट्रीय पर्व","🇮🇳","राष्ट्रीय दिवस और विशेष अवसर"],
+["महापुरुष","🙏","जयंती एवं पुण्यतिथि"],
+["दैनिक संदेश","🌅","सुप्रभात और शुभ रात्रि"]
+];
+let templates=JSON.parse(localStorage.getItem("bs_templates")||"[]");
+let activeCategory="",activeTemplate=null,userPhoto=null;
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem("bs_templates",JSON.stringify(templates));return true}catch(e){alert("फोन के ब्राउज़र में स्टोरेज भर गया है। कम आकार की इमेज अपलोड करें या कुछ पोस्टर हटाएं।");return false}}
+function setView(id){["home","gallery","personalize","adminLogin","admin"].forEach(s=>$(s).classList.toggle("hidden",s!==id));window.scrollTo(0,0)}
+function goHome(){setView("home")}
+function renderCats(){
+ $("cats").innerHTML=categories.map((c,i)=>`<button class="card" onclick="openGallery('${c[0]}')"><div class="emoji">${c[1]}</div><b>${c[0]}</b><small>${c[2]}</small></button>`).join("");
+ $("aCat").innerHTML=categories.map(c=>`<option>${c[0]}</option>`).join("");
+}
+function openGallery(cat){activeCategory=cat;$("galleryTitle").textContent=cat+" – पोस्टर चुनें";const arr=templates.filter(t=>t.category===cat);$("galleryItems").innerHTML=arr.length?arr.map(t=>`<button class="template" onclick="chooseTemplate('${t.id}')"><img src="${t.data}" alt=""><b>${t.title}</b></button>`).join(""):`<div class="panel"><b>अभी पोस्टर अपलोड नहीं किए गए हैं।</b><p class="muted">एडमिन पैनल से इस कैटेगरी के तैयार पोस्टर अपलोड करें।</p><button onclick="showAdmin()">पोस्टर अपलोड करें</button></div>`;setView("gallery")}
+function chooseTemplate(id){activeTemplate=templates.find(t=>t.id===id);userPhoto=null;$("userPhoto").value="";["uName","uRole","uDistrict","uPhone"].forEach(k=>$(k).value="");setView("personalize");renderPreview()}
+function backGallery(){openGallery(activeCategory)}
+const DEMO_ADMIN_PIN="2580";
+function showAdminLogin(){$("adminPin").value="";setView("adminLogin")}
+function verifyAdmin(){
+ if($("adminPin").value===DEMO_ADMIN_PIN){renderAdmin();setView("admin")}
+ else{alert("गलत PIN। केवल अधिकृत एडमिन ही पोस्टर अपलोड कर सकता है।")}
+}
+function showAdmin(){showAdminLogin()}
+function addTemplate(){
+ const file=$("aImage").files[0],title=$("aTitle").value.trim(),category=$("aCat").value;
+ if(!file||!title){alert("पोस्टर इमेज और पोस्टर का नाम चुनें।");return}
+ const reader=new FileReader();reader.onload=()=>{
+  const img=new Image();img.onload=()=>{
+   const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+   const data=c.toDataURL("image/jpeg",.82);
+   const item={id:String(Date.now())+Math.random().toString(16).slice(2),category,title,data};
+   templates.push(item);if(save()){alert("पोस्टर अपलोड हो गया।");$("aTitle").value="";$("aImage").value="";renderAdmin()}
+  };img.src=reader.result
+ };reader.readAsDataURL(file)
+}
+function renderAdmin(){
+ $("adminItems").innerHTML=templates.length?templates.map(t=>`<div class="template"><img src="${t.data}"><b>${t.title}</b><small>${t.category}</small><button class="danger" style="width:100%;margin-top:5px" onclick="deleteTemplate('${t.id}')">डिलीट</button></div>`).join(""):`<p class="muted">अभी कोई पोस्टर अपलोड नहीं है।</p>`
+}
+function deleteTemplate(id){if(confirm("क्या यह पोस्टर हटाना है?")){templates=templates.filter(t=>t.id!==id);save();renderAdmin()}}
+$("userPhoto").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{userPhoto=new Image();userPhoto.onload=renderPreview;userPhoto.src=r.result};r.readAsDataURL(f)});
+["uName","uRole","uDistrict","uPhone"].forEach(id=>$(id).addEventListener("input",renderPreview));
+function renderPreview(){
+ if(!activeTemplate)return;const c=$("preview"),ctx=c.getContext("2d"),img=new Image();img.onload=()=>{
+  const w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
+  // The uploaded artwork is kept intact and fitted proportionally.
+  const scale=Math.max(w/img.width,h/img.height),iw=img.width*scale,ih=img.height*scale;ctx.drawImage(img,(w-iw)/2,(h-ih)/2,iw,ih);
+  // A clean footer strip is reserved for the user's identity.
+  const fh=Math.round(h*.205),fy=h-fh;ctx.fillStyle="rgba(255,250,241,.97)";ctx.fillRect(0,fy,w,fh);ctx.fillStyle="#b9691b";ctx.fillRect(0,fy,w,9);
+  const photoSize=fh*.67,px=75,py=fy+(fh-photoSize)/2;
+  if(userPhoto){ctx.save();ctx.beginPath();ctx.arc(px+photoSize/2,py+photoSize/2,photoSize/2,0,Math.PI*2);ctx.clip();const sc=Math.max(photoSize/userPhoto.width,photoSize/userPhoto.height);const iw2=userPhoto.width*sc,ih2=userPhoto.height*sc;ctx.drawImage(userPhoto,px+photoSize/2-iw2/2,py+photoSize/2-ih2/2,iw2,ih2);ctx.restore();ctx.strokeStyle="#b9691b";ctx.lineWidth=7;ctx.beginPath();ctx.arc(px+photoSize/2,py+photoSize/2,photoSize/2,0,Math.PI*2);ctx.stroke()}
+  else{ctx.fillStyle="#ead9c2";ctx.beginPath();ctx.arc(px+photoSize/2,py+photoSize/2,photoSize/2,0,Math.PI*2);ctx.fill();ctx.fillStyle="#8d6235";ctx.font="26px sans-serif";ctx.textAlign="center";ctx.fillText("फोटो",px+photoSize/2,py+photoSize/2+9)}
+  const tx=px+photoSize+45,tw=w-tx-40;ctx.textAlign="left";ctx.fillStyle="#432b17";
+  const name=$("uName").value.trim()||"आपका नाम";ctx.font="bold 43px sans-serif";fitText(ctx,name,tx,fy+fh*.36,tw,43);
+  const details=[$("uRole").value.trim(),$("uDistrict").value.trim()?"जिला: "+$("uDistrict").value.trim():"",$("uPhone").value.trim()?"मो.: "+$("uPhone").value.trim():""].filter(Boolean).join("  |  ");
+  ctx.font="29px sans-serif";ctx.fillStyle="#6a523b";fitText(ctx,details,tx,fy+fh*.66,tw,29);
+  ctx.textAlign="right";ctx.font="20px sans-serif";ctx.fillStyle="#9b6a35";ctx.fillText("भारत स्वाभिमान",w-30,h-22);
+ };img.src=activeTemplate.data
+}
+function fitText(ctx,text,x,y,max,font){if(!text)return;let size=font;ctx.font=(font>=40?"bold ":"")+size+"px sans-serif";while(ctx.measureText(text).width>max&&size>18){size-=1;ctx.font=(font>=40?"bold ":"")+size+"px sans-serif"}ctx.fillText(text,x,y)}
+function downloadPoster(){const a=document.createElement("a");a.download="Bharat-Swabhiman-Poster.png";a.href=$("preview").toDataURL("image/png");a.click()}
+async function sharePoster(){ $("preview").toBlob(async blob=>{const file=new File([blob],"Bharat-Swabhiman.png",{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:"भारत स्वाभिमान"})}catch(e){}}else{downloadPoster();alert("पोस्टर डाउनलोड कर दिया गया है।")}},"image/png")}
+renderCats();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+</script>
+</body></html>
